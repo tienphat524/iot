@@ -70,7 +70,7 @@
           <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
-              <input type="checkbox" />
+              <input v-model="buttonStatus1" v-on:click="toggleButton1()" type="checkbox" />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -84,7 +84,7 @@
           <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
-              <input type="checkbox" />
+              <input v-model="buttonStatus2" v-on:click="toggleButton2()" type="checkbox" />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -98,7 +98,7 @@
           <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
-              <input type="checkbox" />
+              <input v-model="buttonStatus3" v-on:click="toggleButton3()" type="checkbox" />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -112,7 +112,7 @@
           <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
-              <input type="checkbox" />
+              <input v-model="buttonStatus4" v-on:click="toggleButton4()" type="checkbox" />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -186,6 +186,11 @@ export default {
     name:'',
     mbnumber:'',
     contacts: [],
+
+    buttonStatus1 : false,
+    buttonStatus2 : false,
+    buttonStatus3 : false,
+    buttonStatus4 : false,
   }),
 
   mounted(){
@@ -193,6 +198,21 @@ export default {
   },
 
   methods: {
+    toggleButton1(){
+      this.buttonStatus1 = !this.buttonStatus1
+    },
+
+    toggleButton2(){
+      this.buttonStatus2 = !this.buttonStatus2
+    },
+
+    toggleButton3(){
+      this.buttonStatus3 = !this.buttonStatus3
+    },
+
+    toggleButton4(){
+      this.buttonStatus4 = !this.buttonStatus4
+    },
 
     saveData(){
       let obj = {
@@ -542,7 +562,7 @@ input:checked+.slider:before {
 }
 
 .stt {
-  padding-left: 100px;
+  padding-left: 100px; 
 }
 
 .text {
@@ -620,5 +640,3 @@ input:checked+.slider:before {
   margin-top: 15px;
 }
 </style>
-
-
