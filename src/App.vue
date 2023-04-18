@@ -94,8 +94,8 @@
       <div class="status_col s_3">
         <h1>Fan</h1>
         <div class="stt">
-          <img src="./assets/img/fan.png" style="width: 80px;" />
-          <div class="btn">
+          <img src="./assets/img/fan.png" style="width: 80px; margin-left: 70px;" />
+          <div class="btn" style="margin-left: 50px;">
             <span class="text">OFF</span>
             <label class="switch">
               <input v-model="buttonStatus3" v-on:click="toggleButton3()" type="checkbox" />
@@ -108,8 +108,8 @@
       <div class="status_col s_4">
         <h1>Motor</h1>
         <div class="stt">
-          <img src="./assets/img/timing-belt.png" style="width: 80px;" />
-          <div class="btn">
+          <img src="./assets/img/timing-belt.png" style="width: 80px; margin-left: 30px;" />
+          <div class="btn" style="margin-left: 20px;">
             <span class="text">OFF</span>
             <label class="switch">
               <input v-model="buttonStatus4" v-on:click="toggleButton4()" type="checkbox" />
@@ -132,8 +132,8 @@
               autocomplete="off">
           </div>
           <div class="col-md-4">
-            <input class="form-control" v-model="mbnumber" type="number" placeholder="Enter Mb Number" aria-label="default input example"
-              autocomplete="off">
+            <input class="form-control" v-model="mbnumber" type="number" placeholder="Enter Mb Number"
+              aria-label="default input example" autocomplete="off">
           </div>
           <div class="col-md-1">
             <button type="button" v-on:click="saveData" class="btnn btn-primary">Save</button>
@@ -154,7 +154,7 @@
               <tbody>
                 <tr v-for="(contact, index) in contacts" :key="index">
                   <td>{{ contact.name }}</td>
-                  <td>{{contact.mbnumber}}</td>
+                  <td>{{ contact.mbnumber }}</td>
                   <td><button type="button" class="btn btn-delete" style="width: auto;">Delete</button></td>
                 </tr>
               </tbody>
@@ -180,67 +180,133 @@ import { dhtTempCollection } from './utl/firebase'
 import { dhtHumCollection } from './utl/firebase'
 import { lightCollection } from './utl/firebase'
 import { soilCollection } from './utl/firebase'
+import { pump1Status } from './utl/firebase'
+import { pump2Status } from './utl/firebase'
+import { fanStatus } from './utl/firebase'
+import { motorStatus } from './utl/firebase'
 
 export default {
-  data:() => ({
-    name:'',
-    mbnumber:'',
+  data: () => ({
+    name: '',
+    mbnumber: '',
     contacts: [],
 
-    buttonStatus1 : false,
-    buttonStatus2 : false,
-    buttonStatus3 : false,
-    buttonStatus4 : false,
+    buttonStatus1: false,
+    buttonStatus2: false,
+    buttonStatus3: false,
+    buttonStatus4: false,
   }),
 
-  mounted(){
-    this.fecthData()
-  },
+
+  // mounted(){
+  //   this.fecthData()
+  // },
 
   methods: {
-    toggleButton1(){
+    toggleButton1() {
       this.buttonStatus1 = !this.buttonStatus1
+      
+      let obj1 = {
+        buttonStatus1: this.buttonStatus1,
+        timestap: new Date(),
+      }
+
+      firebase.firestore.collection('Pump1').add(obj1).then(doc => {
+        alert('Data add and Doc id ' + doc.id)
+      }).catch(e => {
+        console.log(e)
+      })
+
+      pump1Status.set(this.buttonStatus1 ? 1 : 0).then(() => {
+      }).catch((e) => {
+        console.log(e)
+      })
+
     },
 
-    toggleButton2(){
+    toggleButton2() {
       this.buttonStatus2 = !this.buttonStatus2
+      let obj2 = {
+        buttonStatus2: this.buttonStatus2,
+        timestap: new Date(),
+      }
+      firebase.firestore.collection('Pump2').add(obj2).then(doc => {
+        alert('Data add and Doc id ' + doc.id)
+      }).catch(e => {
+        console.log(e)
+      })
+
+      pump2Status.set(this.buttonStatus2 ? 1 : 0).then(() => {
+      }).catch((e) => {
+        console.log(e)
+      })
+
     },
 
-    toggleButton3(){
+    toggleButton3() {
       this.buttonStatus3 = !this.buttonStatus3
+      let obj3 = {
+        buttonStatus3: this.buttonStatus3,
+        timestap: new Date(),
+      }
+      firebase.firestore.collection('Fan').add(obj3).then(doc => {
+        alert('Data add and Doc id ' + doc.id)
+      }).catch(e => {
+        console.log(e)
+      })
+
+      fanStatus.set(this.buttonStatus3 ? 1 : 0).then(() => {
+      }).catch((e) => {
+        console.log(e)
+      })
+
     },
 
-    toggleButton4(){
+    toggleButton4() {
       this.buttonStatus4 = !this.buttonStatus4
+      let obj4 = {
+        buttonStatus4: this.buttonStatus4,
+        timestap: new Date(),
+      }
+      firebase.firestore.collection('Motor').add(obj4).then(doc => {
+        alert('Data add and Doc id ' + doc.id)
+      }).catch(e => {
+        console.log(e)
+      })
+
+      motorStatus.set(this.buttonStatus4 ? 1 : 0).then(() => {
+      }).catch((e) => {
+        console.log(e)
+      })
     },
 
-    saveData(){
+    saveData() {
       let obj = {
         name: this.name,
         mbnumber: this.mbnumber,
         timestap: new Date()
       }
 
-      firebase.firestore.collection('contacts').add(obj).then(doc=>{
-        alert('Data add and Doc id '+doc.id)
-        this.fecthData()
-        this.name =''
-        this.mbnumber=''
-      }).catch(e=>{
+      firebase.firestore.collection('contacts').add(obj).then(doc => {
+        alert('Data add and Doc id ' + doc.id)
+        // this.fecthData()
+        this.name = ''
+        this.mbnumber = ''
+      }).catch(e => {
         console.log(e)
       })
+    },
+
+    // fecthData(){
+    //   this.contacts=[]
+    //   firebase.firestore.collection('contacts').get().then(docs=>{
+    //     docs.forEach(doc=>{
+    //       this.contacts.push(doc.data())
+    //     })
+    //   })
+    // }
+
   },
-
-    fecthData(){
-      this.contacts=[]
-      firebase.firestore.collection('contacts').get().then(docs=>{
-        docs.forEach(doc=>{
-          this.contacts.push(doc.data())
-        })
-      })
-    }
-
-},
 
   setup() {
     const state = reactive({
@@ -257,7 +323,7 @@ export default {
       let productDataSet = await productCollection.once("value");
       state.productData = productDataSet.val();
 
-      let lm35DataSet = await lm35Collection.once("value", (snapshot) => {
+      let lm35DataSet = await lm35Collection.on("value", (snapshot) => {
         state.lm35Data = snapshot.val();
       });
       // state.lm35Data = lm35DataSet.val();
@@ -562,7 +628,7 @@ input:checked+.slider:before {
 }
 
 .stt {
-  padding-left: 100px; 
+  padding-left: 100px;
 }
 
 .text {
