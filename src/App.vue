@@ -123,6 +123,7 @@
 
     <div class="status2 layout">
       <h1>Weather</h1>
+      <img src="./assets/img/cloudy.png" style="width: 30%;">
       <div class="firestore">
 
         <!--Contact form-->
@@ -198,18 +199,34 @@ export default {
     if (buttonStatus11) {
       this.buttonStatus1 = JSON.parse(buttonStatus11)
     }
+    pump1Status.on('value', (snapshot) => {
+      this.buttonStatus1 = snapshot.val()
+    })
+
     const buttonStatus22 = localStorage.getItem('buttonStatus2')
     if (buttonStatus22) {
       this.buttonStatus2 = JSON.parse(buttonStatus22)
     }
+    pump2Status.on('value', (snapshot) => {
+      this.buttonStatus2 = snapshot.val()
+    })
+
     const buttonStatus33 = localStorage.getItem('buttonStatus3')
     if (buttonStatus33) {
       this.buttonStatus3 = JSON.parse(buttonStatus33)
     }
+    fanStatus.on('value', (snapshot) => {
+      this.buttonStatus3 = snapshot.val()
+    })
+
     const buttonStatus44 = localStorage.getItem('buttonStatus4')
     if (buttonStatus44) {
       this.buttonStatus4 = JSON.parse(buttonStatus44)
     }
+    motorStatus.on('value', (snapshot) => {
+      this.buttonStatus4 = snapshot.val()
+    })
+
   },
 
   methods: {
@@ -682,6 +699,7 @@ input:checked+.slider:before {
   box-shadow: 7px 7px 13px 4px rgba(102, 102, 102, 0.25);
   border-radius: 40px;
   text-align: center;
+  align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
 }
