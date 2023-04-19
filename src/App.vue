@@ -289,7 +289,7 @@ export default {
       }).catch(e => {
         console.log(e)
       })
-
+      
       motorStatus.set(this.buttonStatus4 ? 1 : 0).then(() => {
       }).catch((e) => {
         console.log(e)

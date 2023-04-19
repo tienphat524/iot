@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:5173/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="module" src="./Smart Farm Project_files/client"></script>
+
+    
+    <link rel="icon" href="http://localhost:5173/smart-farm.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farm Project</title>
+    
+  <style type="text/css" data-vite-dev-id="C:/Users/nguye/OneDrive/Desktop/Iot/src/App.vue?vue&amp;type=style&amp;index=0&amp;lang.css">
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  padding: 0px;
+  font-family: Merriweather;
+  font-size: 12px;
+  color: #000;
+}
+.layout {
+  background-color: rgb(168, 168, 235);
+  /* border: 1px solid white; */
+  min-height: 50px;
+}
+.container {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 100px 1fr 1fr;
+  grid-template-rows: 50px 1fr 1fr 50px;
+  grid-template-areas:
+    "header header header"
+    "sidebar value value"
+    "sidebar status1 status2"
+    "sidebar footer footer";
+}
+
+/* ---------Thanh dau trang--------*/
+.header {
+  grid-area: header;
+  color: blue;
+  background-color: #70a1ff;
+  display: flex;
+}
+.header h1 {
+  font-size: 30px;
+  margin: auto;
+}
+
+/*-----------------------------------*/
+
+/*-------- Thanh menu ben trai------- */
+.sidebar {
+  grid-area: sidebar;
+  background-color: #09006f;
+}
+.sidebar nav {
+  height: 100%;
+}
+.sidebar nav ul {
+  height: 100%;
+  list-style-type: none;
+  margin: 0px 0 20px 0;
+}
+.sidebar nav ul li {
+  margin: 0px 0 40px 0;
+}
+.sidebar nav ul li a {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: white;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.sidebar nav ul li a img {
+  width: 50px;
+  height: 50px;
+}
+.sidebar nav ul li a:hover {
+  background-color: #2980b9;
+  border-radius: 10px;
+}
+
+/*-----------------------------------*/
+
+/*-------- hien thi gia tri------- */
+.value {
+  grid-area: value;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: white;
+}
+.value_col {
+  display: flex;
+  flex-direction: column;
+  width: 22%;
+  height: inherit;
+  background-color: #e7d5ff;
+  border-radius: 40px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  /* box-shadow: 7px 7px 13px 4px rgba(102, 102, 102, 0.25); */
+}
+.col_1 {
+  display: flex;
+  padding-left: 10px;
+  color: red;
+}
+.col_1 h2 {
+  margin-top: 0px;
+  font-size: 60px;
+}
+.col_1 img {
+  width: 120px;
+}
+.col_2 {
+  display: flex;
+  padding-left: 10px;
+  color: #1e90ff;
+}
+.col_2 h2 {
+  margin-top: 0px;
+  font-size: 60px;
+}
+.col_2 img {
+  width: 120px;
+}
+.col_3 {
+  display: flex;
+  padding-left: 10px;
+  color: orange;
+}
+.col_3 h2 {
+  margin-top: 0px;
+  font-size: 60px;
+}
+.col_3 img {
+  width: 130px;
+}
+.col_4 {
+  display: flex;
+  padding-left: 10px;
+  color: #2f3542;
+}
+.col_4 h2 {
+  margin-top: 0px;
+  font-size: 60px;
+}
+.col_4 img {
+  width: 130px;
+}
+
+/*-----------------------------------*/
+
+/*-------- hien thi trang thai------- */
+.status1 {
+  grid-area: status1;
+  background-color: white;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 900px;
+  grid-gap: 20px;
+}
+.status_col {
+  border-radius: 10px;
+  color: #000;
+  background-color: #e7d5ff;
+  box-shadow: 7px 7px 13px 4px rgba(102, 102, 102, 0.25);
+}
+.status_col h1 {
+  padding-left: 20px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+input:checked+.slider {
+  background-color: #2196f3;
+}
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
+}
+.btn {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  justify-content: space-between;
+  width: 150px;
+}
+.s_1 {
+  margin: 10px 0px 0px 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.stt {
+  padding-left: 100px;
+}
+.text {
+  font-size: 20px;
+  font-weight: 700;
+  color: blue;
+}
+.s_1 img {
+  width: 100px;
+}
+.s_2 {
+  margin: 10px 50px 0px 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.s_2 img {
+  width: 100px;
+}
+.s_3 {
+  margin: 0px 0px 10px 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.s_3 img {
+  width: 100px;
+}
+.s_4 {
+  margin: 0px 50px 10px 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.s_4 img {
+  width: 100px;
+}
+.status2 {
+  grid-area: status2;
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+}
+.status2 {
+  width: 450px;
+  height: auto;
+  background-color: #e7d5ff;
+  color: blue;
+  box-shadow: 7px 7px 13px 4px rgba(102, 102, 102, 0.25);
+  border-radius: 40px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.footer {
+  grid-area: footer;
+  font-size: 8px;
+  text-align: center;
+  justify-items: center;
+  background-color: #70a1ff;
+  color: white;
+}
+.footer h1 {
+  margin-top: 15px;
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/nguye/OneDrive/Desktop/Iot/src/assets/main.css">/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --vt-c-white: #ffffff;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
+
+  --vt-c-black: #181818;
+  --vt-c-black-soft: #222222;
+  --vt-c-black-mute: #282828;
+
+  --vt-c-indigo: #2c3e50;
+
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dadarkrk-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+
+  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+}
+/* semantic color variables for this project */
+:root {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
+
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+
+  --section-gap: 160px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}
+body {
+  color: var(--color-text);
+  background: white;
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  font-weight: normal;
+}
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+}
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+}
+</style></head>
+  <body>
+    <div class="container"><div class="header layout"><img width="70px" src="./Smart Farm Project_files/01_logobachkhoasang.png"><h1>SMART FARM PROJECT</h1></div><div class="sidebar layout" style="padding-top: 20px; overflow: hidden;"><nav><ul><li><a href="http://localhost:5173/#"><img src="./Smart Farm Project_files/icon home.png"> Smart Farm </a></li><li><a href="http://localhost:5173/#"><img src="./Smart Farm Project_files/db1.png"> Chart </a></li><li><a href="http://localhost:5173/#"><img src="./Smart Farm Project_files/mess.png"> Message </a></li><li><a href="http://localhost:5173/#"><img src="./Smart Farm Project_files/device.png"> Devices </a></li><li><a href="http://localhost:5173/#"><img src="./Smart Farm Project_files/setting.png"> Settings </a></li></ul></nav></div><div class="value layout"><div class="value_col col_1"><h1>Temperature</h1><h2>34 °C</h2><img src="./Smart Farm Project_files/temperature.png"></div><div class="value_col col_2"><h1>Humidity</h1><h2>82 %</h2><img src="./Smart Farm Project_files/humidity.png"></div><div class="value_col col_3"><h1>Light</h1><h2>234 lux</h2><img src="./Smart Farm Project_files/sensor.png"></div><div class="value_col col_4"><h1>Soil Moisture</h1><h2>67 %</h2><img src="./Smart Farm Project_files/soil-analysis.png"></div></div><div class="status1 layout"><div class="status_col s_1"><h1>Pump 1</h1><div class="stt"><img src="./Smart Farm Project_files/pump.png"><div class="btn"><span class="text">OFF</span><label class="switch"><input type="checkbox"><span class="slider round"></span></label><span class="text">ON</span></div></div></div><div class="status_col s_2"><h1>Pump 2</h1><div class="stt"><img src="./Smart Farm Project_files/pump (1).png"><div class="btn"><span class="text">OFF</span><label class="switch"><input type="checkbox"><span class="slider round"></span></label><span class="text">ON</span></div></div></div><div class="status_col s_3"><h1>Fan</h1><div class="stt"><img src="./Smart Farm Project_files/fan.png" style="width: 80px; margin-left: 70px;"><div class="btn" style="margin-left: 50px;"><span class="text">OFF</span><label class="switch"><input type="checkbox"><span class="slider round"></span></label><span class="text">ON</span></div></div></div><div class="status_col s_4"><h1>Motor</h1><div class="stt"><img src="./Smart Farm Project_files/timing-belt.png" style="width: 80px; margin-left: 30px;"><div class="btn" style="margin-left: 20px;"><span class="text">OFF</span><label class="switch"><input type="checkbox"><span class="slider round"></span></label><span class="text">ON</span></div></div></div></div><div class="status2 layout"><h1>Weather</h1><div class="firestore"></div></div><div class="footer layout"><h1>Design by: Nguyen Tien Phat - 1914598</h1></div></div>
+    <script type="module" src="./Smart Farm Project_files/main.ts"></script>
+  
+
+</body></html>
