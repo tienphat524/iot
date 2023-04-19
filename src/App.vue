@@ -126,7 +126,7 @@
       <div class="firestore">
 
         <!--Contact form-->
-        <div class="row p-3" style="background-color: #fafafa;">
+        <!-- <div class="row p-3" style="background-color: #fafafa;">
           <div class="col-md-4">
             <input class="form-control" v-model="name" type="text" placeholder="Name" aria-label="default input example"
               autocomplete="off">
@@ -138,10 +138,10 @@
           <div class="col-md-1">
             <button type="button" v-on:click="saveData" class="btnn btn-primary">Save</button>
           </div>
-        </div>
+        </div> -->
 
         <!--Contact data-->
-        <div class="row mt-5">
+        <!-- <div class="row mt-5">
           <div class="col -md-12">
             <table class="table">
               <thead>
@@ -160,7 +160,7 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -187,25 +187,35 @@ import { motorStatus } from './utl/firebase'
 
 export default {
   data: () => ({
-    name: '',
-    mbnumber: '',
-    contacts: [],
-
     buttonStatus1: false,
     buttonStatus2: false,
     buttonStatus3: false,
     buttonStatus4: false,
   }),
 
-
-  // mounted(){
-  //   this.fecthData()
-  // },
+  mounted() {
+    const buttonStatus11 = localStorage.getItem('buttonStatus1')
+    if (buttonStatus11) {
+      this.buttonStatus1 = JSON.parse(buttonStatus11)
+    }
+    const buttonStatus22 = localStorage.getItem('buttonStatus2')
+    if (buttonStatus22) {
+      this.buttonStatus2 = JSON.parse(buttonStatus22)
+    }
+    const buttonStatus33 = localStorage.getItem('buttonStatus3')
+    if (buttonStatus33) {
+      this.buttonStatus3 = JSON.parse(buttonStatus33)
+    }
+    const buttonStatus44 = localStorage.getItem('buttonStatus4')
+    if (buttonStatus44) {
+      this.buttonStatus4 = JSON.parse(buttonStatus44)
+    }
+  },
 
   methods: {
     toggleButton1() {
       this.buttonStatus1 = !this.buttonStatus1
-      
+
       let obj1 = {
         buttonStatus1: this.buttonStatus1,
         timestap: new Date(),
@@ -222,6 +232,8 @@ export default {
         console.log(e)
       })
 
+      localStorage.setItem('buttonStatus1', JSON.stringify(this.buttonStatus1))
+      
     },
 
     toggleButton2() {
@@ -241,6 +253,8 @@ export default {
         console.log(e)
       })
 
+      localStorage.setItem('buttonStatus2', JSON.stringify(this.buttonStatus2))
+
     },
 
     toggleButton3() {
@@ -259,7 +273,9 @@ export default {
       }).catch((e) => {
         console.log(e)
       })
-
+      
+      localStorage.setItem('buttonStatus3', JSON.stringify(this.buttonStatus3))
+  
     },
 
     toggleButton4() {
@@ -278,33 +294,10 @@ export default {
       }).catch((e) => {
         console.log(e)
       })
+
+      localStorage.setItem('buttonStatus4', JSON.stringify(this.buttonStatus4))
+
     },
-
-    saveData() {
-      let obj = {
-        name: this.name,
-        mbnumber: this.mbnumber,
-        timestap: new Date()
-      }
-
-      firebase.firestore.collection('contacts').add(obj).then(doc => {
-        alert('Data add and Doc id ' + doc.id)
-        // this.fecthData()
-        this.name = ''
-        this.mbnumber = ''
-      }).catch(e => {
-        console.log(e)
-      })
-    },
-
-    // fecthData(){
-    //   this.contacts=[]
-    //   firebase.firestore.collection('contacts').get().then(docs=>{
-    //     docs.forEach(doc=>{
-    //       this.contacts.push(doc.data())
-    //     })
-    //   })
-    // }
 
   },
 
