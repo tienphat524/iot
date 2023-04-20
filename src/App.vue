@@ -122,47 +122,38 @@
     </div>
 
     <div class="status2 layout">
-      <h1>Weather</h1>
-      <img src="./assets/img/cloudy.png" style="width: 30%;">
-      <div class="firestore">
-
-        <!--Contact form-->
-        <!-- <div class="row p-3" style="background-color: #fafafa;">
-          <div class="col-md-4">
-            <input class="form-control" v-model="name" type="text" placeholder="Name" aria-label="default input example"
-              autocomplete="off">
-          </div>
-          <div class="col-md-4">
-            <input class="form-control" v-model="mbnumber" type="number" placeholder="Enter Mb Number"
-              aria-label="default input example" autocomplete="off">
-          </div>
-          <div class="col-md-1">
-            <button type="button" v-on:click="saveData" class="btnn btn-primary">Save</button>
-          </div>
-        </div> -->
-
-        <!--Contact data-->
-        <!-- <div class="row mt-5">
-          <div class="col -md-12">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Contact Number</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(contact, index) in contacts" :key="index">
-                  <td>{{ contact.name }}</td>
-                  <td>{{ contact.mbnumber }}</td>
-                  <td><button type="button" class="btn btn-delete" style="width: auto;">Delete</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div> -->
+      <h1>Settings</h1>
+      <div class="btnauto">
+        <span class="text1">Manual</span>
+        <label class="switch">
+          <input v-model="buttonStatus5" v-on:click="toggleButton5()" type="checkbox">
+          <span class="slider round"></span>
+        </label>
+        <span class="text1">Automatic</span>
       </div>
+      <form>
+        <div class="form-set"> 
+          <label class="form-label" for="temp-threshold">Temperature</label>
+          <input class="form-input" type="number" id="temp-threshold" name="temp-threshold" required>
+        </div>
+
+        <div class="form-set">
+          <label class="form-label" for="humidity-threshold">Humidity</label>
+          <input class="form-input" type="number" id="humidity-threshold" name="humidity-threshold" required>
+        </div>
+
+        <div class="form-set">
+          <label class="form-label" for="light-threshold">Light</label>
+          <input class="form-input" type="number" id="light-threshold" name="light-threshold" required>
+         </div>
+        
+        <div class="form-set"> 
+          <label class="form-label" for="soil-moisture-threshold">Soil Moisture</label>
+          <input class="form-input" type="number" id="soil-moisture-threshold" name="soil-moisture-threshold" required>
+        </div>
+
+        <button type="submit" id="save-btn">Save</button>
+      </form>
     </div>
 
     <div class="footer layout">
@@ -175,7 +166,6 @@
 import firebase from './utl/firebase'
 import { onMounted, reactive } from 'vue';
 import 'firebase/database'
-import { productCollection } from './utl/firebase'
 import { lm35Collection } from './utl/firebase'
 import { dhtTempCollection } from './utl/firebase'
 import { dhtHumCollection } from './utl/firebase'
@@ -185,6 +175,7 @@ import { pump1Status } from './utl/firebase'
 import { pump2Status } from './utl/firebase'
 import { fanStatus } from './utl/firebase'
 import { motorStatus } from './utl/firebase'
+import { mode } from './utl/firebase'
 
 export default {
   data: () => ({
@@ -192,6 +183,7 @@ export default {
     buttonStatus2: false,
     buttonStatus3: false,
     buttonStatus4: false,
+    buttonStatus5: false,
   }),
 
   mounted() {
@@ -227,6 +219,14 @@ export default {
       this.buttonStatus4 = snapshot.val()
     })
 
+    const buttonStatus55 = localStorage.getItem('buttonStatus5')
+    if (buttonStatus55) {
+      this.buttonStatus5 = JSON.parse(buttonStatus55)
+    }
+    mode.on('value', (snapshot) => {
+      this.buttonStatus5 = snapshot.val()
+    })
+
   },
 
   methods: {
@@ -250,7 +250,7 @@ export default {
       })
 
       localStorage.setItem('buttonStatus1', JSON.stringify(this.buttonStatus1))
-      
+
     },
 
     toggleButton2() {
@@ -290,9 +290,9 @@ export default {
       }).catch((e) => {
         console.log(e)
       })
-      
+
       localStorage.setItem('buttonStatus3', JSON.stringify(this.buttonStatus3))
-  
+
     },
 
     toggleButton4() {
@@ -306,7 +306,7 @@ export default {
       }).catch(e => {
         console.log(e)
       })
-      
+
       motorStatus.set(this.buttonStatus4 ? 1 : 0).then(() => {
       }).catch((e) => {
         console.log(e)
@@ -316,11 +316,31 @@ export default {
 
     },
 
+    toggleButton5() {
+      this.buttonStatus5 = !this.buttonStatus5
+      let obj5 = {
+        buttonStatus5: this.buttonStatus5,
+        timestap: new Date(),
+      }
+      firebase.firestore.collection('Mode').add(obj5).then(doc => {
+        alert('Data add and Doc id ' + doc.id)
+      }).catch(e => {
+        console.log(e)
+      })
+
+      mode.set(this.buttonStatus5 ? 1 : 0).then(() => {
+      }).catch((e) => {
+        console.log(e)
+      })
+
+      localStorage.setItem('buttonStatus5', JSON.stringify(this.buttonStatus5))
+
+    },
+
   },
 
   setup() {
     const state = reactive({
-      productData: {},
       lm35Data: {},
       dhtTempData: {},
       dhtHumData: {},
@@ -330,8 +350,8 @@ export default {
     })
 
     onMounted(async () => {
-      let productDataSet = await productCollection.once("value");
-      state.productData = productDataSet.val();
+      // let productDataSet = await productCollection.once("value");
+      // state.productData = productDataSet.val();
 
       let lm35DataSet = await lm35Collection.on("value", (snapshot) => {
         state.lm35Data = snapshot.val();
@@ -702,6 +722,95 @@ input:checked+.slider:before {
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.btnauto {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.text1{
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
+  margin: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked+.slider {
+  background-color: #2196f3;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.form-set {
+  padding: 8px 0;
+  display: flex;
+  color: #000;
+}
+
+.form-input {
+  min-width: 100px;
+}
+
+.form-label {
+  flex: 1;
 }
 
 .footer {

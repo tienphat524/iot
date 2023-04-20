@@ -10,14 +10,14 @@ import 'firebase/firestore'
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAghlwsY210z4g6WYTB0w-JSbaUmBTPz9s",
-  authDomain: "test-3cca0.firebaseapp.com",
-  databaseURL: "https://test-3cca0-default-rtdb.firebaseio.com",
-  projectId: "test-3cca0",
-  storageBucket: "test-3cca0.appspot.com",
-  messagingSenderId: "1919047602",
-  appId: "1:1919047602:web:74bec99d9ce727302fb6ab",
-  measurementId: "G-ZMNPY34VNB"
+  apiKey: "AIzaSyD8DFQJarbBjNkYWdAMYRdAx0sKwUdYJbc",
+  authDomain: "sensor-7aff3.firebaseapp.com",
+  databaseURL: "https://sensor-7aff3-default-rtdb.firebaseio.com",
+  projectId: "sensor-7aff3",
+  storageBucket: "sensor-7aff3.appspot.com",
+  messagingSenderId: "495413132807",
+  appId: "1:495413132807:web:bd1e906a318100dbcf34a2",
+  measurementId: "G-KW1B8228MW"
 };
 
 let app  = firebase.initializeApp(firebaseConfig);
@@ -30,8 +30,7 @@ firebase.firestore()
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db  = firebase.database();
-export const productCollection = db.ref("data/product");
-export const lm35Collection = db.ref("sensor/lm35");
+export const lm35Collection = db.ref("sensor/lm35Temp");
 export const dhtTempCollection = db.ref("sensor/dhtTemp");
 export const dhtHumCollection = db.ref("sensor/dhtHum");
 export const lightCollection = db.ref("sensor/light");
@@ -40,6 +39,7 @@ export const pump1Status = db.ref("status/pump1Status");
 export const pump2Status = db.ref("status/pump2Status");
 export const fanStatus = db.ref("status/fanStatus");
 export const motorStatus = db.ref("status/motorStatus");
+export const mode = db.ref("mode")
 export default {
   firebase: firebase,
   firestore: firebase.firestore(),
