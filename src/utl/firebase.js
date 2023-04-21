@@ -39,7 +39,7 @@ export const pump1Status = db.ref("status/pump1Status");
 export const pump2Status = db.ref("status/pump2Status");
 export const fanStatus = db.ref("status/fanStatus");
 export const motorStatus = db.ref("status/motorStatus");
-export const mode = db.ref("mode")
+export const mode = db.ref("mode");
 export default {
   firebase: firebase,
   firestore: firebase.firestore(),

@@ -94,8 +94,8 @@
       <div class="status_col s_3">
         <h1>Fan</h1>
         <div class="stt">
-          <img src="./assets/img/fan.png" style="width: 80px; margin-left: 70px;" />
-          <div class="btn" style="margin-left: 50px;">
+          <img src="./assets/img/fan.png" style="width: 80px; margin-left: 70px" />
+          <div class="btn" style="margin-left: 50px">
             <span class="text">OFF</span>
             <label class="switch">
               <input v-model="buttonStatus3" v-on:click="toggleButton3()" type="checkbox" />
@@ -108,8 +108,8 @@
       <div class="status_col s_4">
         <h1>Motor</h1>
         <div class="stt">
-          <img src="./assets/img/timing-belt.png" style="width: 80px; margin-left: 30px;" />
-          <div class="btn" style="margin-left: 20px;">
+          <img src="./assets/img/timing-belt.png" style="width: 80px; margin-left: 30px" />
+          <div class="btn" style="margin-left: 20px">
             <span class="text">OFF</span>
             <label class="switch">
               <input v-model="buttonStatus4" v-on:click="toggleButton4()" type="checkbox" />
@@ -126,33 +126,39 @@
       <div class="btnauto">
         <span class="text1">Manual</span>
         <label class="switch">
-          <input v-model="buttonStatus5" v-on:click="toggleButton5()" type="checkbox">
+          <input v-model="buttonStatus5" v-on:click="toggleButton5()" type="checkbox" />
           <span class="slider round"></span>
         </label>
         <span class="text1">Automatic</span>
       </div>
       <form>
-        <div class="form-set"> 
+        <div class="form-set">
           <label class="form-label" for="temp-threshold">Temperature</label>
-          <input class="form-input" type="number" id="temp-threshold" name="temp-threshold" required>
+          <input class="form-input" v-model="tempThreshold" placeholder="C" type="number" id="temp-threshold"
+            name="temp-threshold" required />
         </div>
 
         <div class="form-set">
           <label class="form-label" for="humidity-threshold">Humidity</label>
-          <input class="form-input" type="number" id="humidity-threshold" name="humidity-threshold" required>
+          <input class="form-input" v-model="humThreshold" placeholder="%" type="number" id="humidity-threshold"
+            name="humidity-threshold" required />
         </div>
 
         <div class="form-set">
           <label class="form-label" for="light-threshold">Light</label>
-          <input class="form-input" type="number" id="light-threshold" name="light-threshold" required>
-         </div>
-        
-        <div class="form-set"> 
-          <label class="form-label" for="soil-moisture-threshold">Soil Moisture</label>
-          <input class="form-input" type="number" id="soil-moisture-threshold" name="soil-moisture-threshold" required>
+          <input class="form-input" v-model="lightThreshold" placeholder="lux" type="number" id="light-threshold"
+            name="light-threshold" required />
         </div>
 
-        <button type="submit" id="save-btn">Save</button>
+        <div class="form-set">
+          <label class="form-label" for="soil-moisture-threshold">Soil</label>
+          <input class="form-input" v-model="soilThreshold" placeholder="%" type="number" id="soil-moisture-threshold"
+            name="soil-moisture-threshold" required />
+        </div>
+
+        <button type="submit" v-on:click="saveData()" id="save-btn">
+          Save
+        </button>
       </form>
     </div>
 
@@ -162,20 +168,20 @@
   </div>
 </template>
 
-<script scoped lang="ts" >
-import firebase from './utl/firebase'
-import { onMounted, reactive } from 'vue';
-import 'firebase/database'
-import { lm35Collection } from './utl/firebase'
-import { dhtTempCollection } from './utl/firebase'
-import { dhtHumCollection } from './utl/firebase'
-import { lightCollection } from './utl/firebase'
-import { soilCollection } from './utl/firebase'
-import { pump1Status } from './utl/firebase'
-import { pump2Status } from './utl/firebase'
-import { fanStatus } from './utl/firebase'
-import { motorStatus } from './utl/firebase'
-import { mode } from './utl/firebase'
+<script scoped lang="ts">
+import firebase from "./utl/firebase";
+import { onMounted, reactive } from "vue";
+import "firebase/database";
+import { lm35Collection } from "./utl/firebase";
+import { dhtTempCollection } from "./utl/firebase";
+import { dhtHumCollection } from "./utl/firebase";
+import { lightCollection } from "./utl/firebase";
+import { soilCollection } from "./utl/firebase";
+import { pump1Status } from "./utl/firebase";
+import { pump2Status } from "./utl/firebase";
+import { fanStatus } from "./utl/firebase";
+import { motorStatus } from "./utl/firebase";
+import { mode } from "./utl/firebase";
 
 export default {
   data: () => ({
@@ -184,159 +190,206 @@ export default {
     buttonStatus3: false,
     buttonStatus4: false,
     buttonStatus5: false,
+
+    tempThreshold: "",
+    humThreshold: "",
+    lightThreshold: "",
+    soilThreshold: "",
   }),
 
   mounted() {
-    const buttonStatus11 = localStorage.getItem('buttonStatus1')
+    const buttonStatus11 = localStorage.getItem("buttonStatus1");
     if (buttonStatus11) {
-      this.buttonStatus1 = JSON.parse(buttonStatus11)
+      this.buttonStatus1 = JSON.parse(buttonStatus11);
     }
-    pump1Status.on('value', (snapshot) => {
-      this.buttonStatus1 = snapshot.val()
-    })
+    pump1Status.on("value", (snapshot) => {
+      this.buttonStatus1 = snapshot.val();
+    });
 
-    const buttonStatus22 = localStorage.getItem('buttonStatus2')
+    const buttonStatus22 = localStorage.getItem("buttonStatus2");
     if (buttonStatus22) {
-      this.buttonStatus2 = JSON.parse(buttonStatus22)
+      this.buttonStatus2 = JSON.parse(buttonStatus22);
     }
-    pump2Status.on('value', (snapshot) => {
-      this.buttonStatus2 = snapshot.val()
-    })
+    pump2Status.on("value", (snapshot) => {
+      this.buttonStatus2 = snapshot.val();
+    });
 
-    const buttonStatus33 = localStorage.getItem('buttonStatus3')
+    const buttonStatus33 = localStorage.getItem("buttonStatus3");
     if (buttonStatus33) {
-      this.buttonStatus3 = JSON.parse(buttonStatus33)
+      this.buttonStatus3 = JSON.parse(buttonStatus33);
     }
-    fanStatus.on('value', (snapshot) => {
-      this.buttonStatus3 = snapshot.val()
-    })
+    fanStatus.on("value", (snapshot) => {
+      this.buttonStatus3 = snapshot.val();
+    });
 
-    const buttonStatus44 = localStorage.getItem('buttonStatus4')
+    const buttonStatus44 = localStorage.getItem("buttonStatus4");
     if (buttonStatus44) {
-      this.buttonStatus4 = JSON.parse(buttonStatus44)
+      this.buttonStatus4 = JSON.parse(buttonStatus44);
     }
-    motorStatus.on('value', (snapshot) => {
-      this.buttonStatus4 = snapshot.val()
-    })
+    motorStatus.on("value", (snapshot) => {
+      this.buttonStatus4 = snapshot.val();
+    });
 
-    const buttonStatus55 = localStorage.getItem('buttonStatus5')
+    const buttonStatus55 = localStorage.getItem("buttonStatus5");
     if (buttonStatus55) {
-      this.buttonStatus5 = JSON.parse(buttonStatus55)
+      this.buttonStatus5 = JSON.parse(buttonStatus55);
     }
-    mode.on('value', (snapshot) => {
-      this.buttonStatus5 = snapshot.val()
-    })
-
+    mode.on("value", (snapshot) => {
+      this.buttonStatus5 = snapshot.val();
+    });
   },
 
   methods: {
     toggleButton1() {
-      this.buttonStatus1 = !this.buttonStatus1
+      this.buttonStatus1 = !this.buttonStatus1;
 
       let obj1 = {
         buttonStatus1: this.buttonStatus1,
         timestap: new Date(),
-      }
+      };
 
-      firebase.firestore.collection('Pump1').add(obj1).then(doc => {
-        alert('Data add and Doc id ' + doc.id)
-      }).catch(e => {
-        console.log(e)
-      })
+      firebase.firestore
+        .collection("Pump1")
+        .add(obj1)
+        .then((doc) => {
+          alert("Data add and Doc id " + doc.id);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      pump1Status.set(this.buttonStatus1 ? 1 : 0).then(() => {
-      }).catch((e) => {
-        console.log(e)
-      })
+      pump1Status
+        .set(this.buttonStatus1 ? 1 : 0)
+        .then(() => { })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      localStorage.setItem('buttonStatus1', JSON.stringify(this.buttonStatus1))
-
+      localStorage.setItem("buttonStatus1", JSON.stringify(this.buttonStatus1));
     },
 
     toggleButton2() {
-      this.buttonStatus2 = !this.buttonStatus2
+      this.buttonStatus2 = !this.buttonStatus2;
       let obj2 = {
         buttonStatus2: this.buttonStatus2,
         timestap: new Date(),
-      }
-      firebase.firestore.collection('Pump2').add(obj2).then(doc => {
-        alert('Data add and Doc id ' + doc.id)
-      }).catch(e => {
-        console.log(e)
-      })
+      };
+      firebase.firestore
+        .collection("Pump2")
+        .add(obj2)
+        .then((doc) => {
+          alert("Data add and Doc id " + doc.id);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      pump2Status.set(this.buttonStatus2 ? 1 : 0).then(() => {
-      }).catch((e) => {
-        console.log(e)
-      })
+      pump2Status
+        .set(this.buttonStatus2 ? 1 : 0)
+        .then(() => { })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      localStorage.setItem('buttonStatus2', JSON.stringify(this.buttonStatus2))
-
+      localStorage.setItem("buttonStatus2", JSON.stringify(this.buttonStatus2));
     },
 
     toggleButton3() {
-      this.buttonStatus3 = !this.buttonStatus3
+      this.buttonStatus3 = !this.buttonStatus3;
       let obj3 = {
         buttonStatus3: this.buttonStatus3,
         timestap: new Date(),
-      }
-      firebase.firestore.collection('Fan').add(obj3).then(doc => {
-        alert('Data add and Doc id ' + doc.id)
-      }).catch(e => {
-        console.log(e)
-      })
+      };
+      firebase.firestore
+        .collection("Fan")
+        .add(obj3)
+        .then((doc) => {
+          alert("Data add and Doc id " + doc.id);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      fanStatus.set(this.buttonStatus3 ? 1 : 0).then(() => {
-      }).catch((e) => {
-        console.log(e)
-      })
+      fanStatus
+        .set(this.buttonStatus3 ? 1 : 0)
+        .then(() => { })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      localStorage.setItem('buttonStatus3', JSON.stringify(this.buttonStatus3))
-
+      localStorage.setItem("buttonStatus3", JSON.stringify(this.buttonStatus3));
     },
 
     toggleButton4() {
-      this.buttonStatus4 = !this.buttonStatus4
+      this.buttonStatus4 = !this.buttonStatus4;
       let obj4 = {
         buttonStatus4: this.buttonStatus4,
         timestap: new Date(),
-      }
-      firebase.firestore.collection('Motor').add(obj4).then(doc => {
-        alert('Data add and Doc id ' + doc.id)
-      }).catch(e => {
-        console.log(e)
-      })
+      };
+      firebase.firestore
+        .collection("Motor")
+        .add(obj4)
+        .then((doc) => {
+          alert("Data add and Doc id " + doc.id);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      motorStatus.set(this.buttonStatus4 ? 1 : 0).then(() => {
-      }).catch((e) => {
-        console.log(e)
-      })
+      motorStatus
+        .set(this.buttonStatus4 ? 1 : 0)
+        .then(() => { })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      localStorage.setItem('buttonStatus4', JSON.stringify(this.buttonStatus4))
-
+      localStorage.setItem("buttonStatus4", JSON.stringify(this.buttonStatus4));
     },
 
     toggleButton5() {
-      this.buttonStatus5 = !this.buttonStatus5
+      this.buttonStatus5 = !this.buttonStatus5;
       let obj5 = {
         buttonStatus5: this.buttonStatus5,
         timestap: new Date(),
-      }
-      firebase.firestore.collection('Mode').add(obj5).then(doc => {
-        alert('Data add and Doc id ' + doc.id)
-      }).catch(e => {
-        console.log(e)
-      })
+      };
+      firebase.firestore
+        .collection("Mode")
+        .add(obj5)
+        .then((doc) => {
+          alert("Data add and Doc id " + doc.id);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      mode.set(this.buttonStatus5 ? 1 : 0).then(() => {
-      }).catch((e) => {
-        console.log(e)
-      })
+      mode
+        .set(this.buttonStatus5 ? 1 : 0)
+        .then(() => { })
+        .catch((e) => {
+          console.log(e);
+        });
 
-      localStorage.setItem('buttonStatus5', JSON.stringify(this.buttonStatus5))
-
+      localStorage.setItem("buttonStatus5", JSON.stringify(this.buttonStatus5));
     },
 
+    saveData() {
+      let obj6 = {
+        tempThreshold: this.tempThreshold,
+        humThreshold: this.humThreshold,
+        lightThreshold: this.lightThreshold,
+        soilThreshold: this.soilThreshold,
+        timestamp : new Date(),
+      };
+      firebase.firestore
+        .collection("setting threshold")
+        .add(obj6)
+        .then((doc) => {
+          alert("Data add and Doc id " + doc.id);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
   },
 
   setup() {
@@ -346,8 +399,7 @@ export default {
       dhtHumData: {},
       lightData: {},
       soilData: {},
-
-    })
+    });
 
     onMounted(async () => {
       // let productDataSet = await productCollection.once("value");
@@ -377,12 +429,11 @@ export default {
         state.soilData = snapshot.val();
       });
       // state.soilData = soilDataSet.val();
-
-    })
+    });
 
     return { state };
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -732,7 +783,7 @@ input:checked+.slider:before {
   justify-content: space-between;
 }
 
-.text1{
+.text1 {
   font-size: 20px;
   font-weight: 400;
   color: #000;
@@ -800,17 +851,19 @@ input:checked+.slider:before {
 }
 
 .form-set {
-  padding: 8px 0;
+  padding: 4px 0;
   display: flex;
   color: #000;
+  align-items: center;
 }
 
 .form-input {
-  min-width: 100px;
+  min-width: 150px;
 }
 
 .form-label {
   flex: 1;
+  text-align: left;
 }
 
 .footer {
