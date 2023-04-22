@@ -182,6 +182,7 @@ import { pump2Status } from "./utl/firebase";
 import { fanStatus } from "./utl/firebase";
 import { motorStatus } from "./utl/firebase";
 import { mode } from "./utl/firebase";
+import { settingThreshold } from "./utl/firebase";
 
 export default {
   data: () => ({
@@ -374,10 +375,10 @@ export default {
 
     saveData() {
       let obj6 = {
-        tempThreshold: this.tempThreshold,
-        humThreshold: this.humThreshold,
-        lightThreshold: this.lightThreshold,
-        soilThreshold: this.soilThreshold,
+        tempThreshold: parseInt(this.tempThreshold),
+        humThreshold: parseInt(this.humThreshold),
+        lightThreshold: parseInt(this.lightThreshold),
+        soilThreshold: parseInt(this.soilThreshold),
         timestamp : new Date(),
       };
       firebase.firestore
@@ -389,6 +390,14 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+
+      settingThreshold.set(obj6, (error) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Data saved successfully.");
+        }
+      });
     },
   },
 
