@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="header layout">
-      <img width="70px" src="https://hcmut.edu.vn/img/nhanDienThuongHieu/01_logobachkhoasang.png" />
+      <img
+        width="70px"
+        src="https://hcmut.edu.vn/img/nhanDienThuongHieu/01_logobachkhoasang.png"
+      />
       <h1>SMART FARM PROJECT</h1>
     </div>
     <div class="sidebar layout" style="padding-top: 20px; overflow: hidden">
@@ -70,7 +73,11 @@
           <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
-              <input v-model="buttonStatus1" v-on:click="toggleButton1()" type="checkbox" />
+              <input
+                v-model="buttonStatus1"
+                v-on:click="toggleButton1()"
+                type="checkbox"
+              />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -84,7 +91,11 @@
           <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
-              <input v-model="buttonStatus2" v-on:click="toggleButton2()" type="checkbox" />
+              <input
+                v-model="buttonStatus2"
+                v-on:click="toggleButton2()"
+                type="checkbox"
+              />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -94,11 +105,18 @@
       <div class="status_col s_3">
         <h1>Fan</h1>
         <div class="stt">
-          <img src="./assets/img/fan.png" style="width: 80px; margin-left: 70px" />
+          <img
+            src="./assets/img/fan.png"
+            style="width: 80px; margin-left: 70px"
+          />
           <div class="btn" style="margin-left: 50px">
             <span class="text">OFF</span>
             <label class="switch">
-              <input v-model="buttonStatus3" v-on:click="toggleButton3()" type="checkbox" />
+              <input
+                v-model="buttonStatus3"
+                v-on:click="toggleButton3()"
+                type="checkbox"
+              />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -108,11 +126,18 @@
       <div class="status_col s_4">
         <h1>Motor</h1>
         <div class="stt">
-          <img src="./assets/img/timing-belt.png" style="width: 80px; margin-left: 30px" />
+          <img
+            src="./assets/img/timing-belt.png"
+            style="width: 80px; margin-left: 30px"
+          />
           <div class="btn" style="margin-left: 20px">
             <span class="text">OFF</span>
             <label class="switch">
-              <input v-model="buttonStatus4" v-on:click="toggleButton4()" type="checkbox" />
+              <input
+                v-model="buttonStatus4"
+                v-on:click="toggleButton4()"
+                type="checkbox"
+              />
               <span class="slider round"></span>
             </label>
             <span class="text">ON</span>
@@ -126,37 +151,127 @@
       <div class="btnauto">
         <span class="text1">Manual</span>
         <label class="switch">
-          <input v-model="buttonStatus5" v-on:click="toggleButton5()" type="checkbox" />
+          <input
+            v-model="buttonStatus5"
+            v-on:click="toggleButton5()"
+            type="checkbox"
+          />
           <span class="slider round"></span>
         </label>
         <span class="text1">Automatic</span>
       </div>
-      <form>
+      <form style="width: 100%">
         <div class="form-set">
           <label class="form-label" for="temp-threshold">Temperature</label>
-          <input class="form-input" v-model="tempThreshold" placeholder="C" type="number" id="temp-threshold"
-            name="temp-threshold" required />
+          <input
+            class="form-input"
+            v-model="tempThreshold"
+            placeholder="C"
+            type="number"
+            id="temp-threshold"
+            name="temp-threshold"
+            :disabled="!buttonStatus5"
+            required
+          />
+          <label class="form-label form-label--col2" for="temp-threshold"
+            >Bắt đầu tưới</label
+          >
+          <input
+            class="form-input"
+            v-model="hourPump"
+            placeholder="hour"
+            type="number"
+            id="hour-pump"
+            name="hour-pump"
+            :disabled="!buttonStatus5"
+            required
+          />
         </div>
 
         <div class="form-set">
           <label class="form-label" for="humidity-threshold">Humidity</label>
-          <input class="form-input" v-model="humThreshold" placeholder="%" type="number" id="humidity-threshold"
-            name="humidity-threshold" required />
+          <input
+            class="form-input"
+            v-model="humThreshold"
+            placeholder="%"
+            type="number"
+            id="humidity-threshold"
+            name="humidity-threshold"
+            :disabled="!buttonStatus5"
+            required
+          />
+          <label class="form-label form-label--col2" for="humidity-threshold"
+            >Thời lượng tưới</label
+          >
+          <input
+            class="form-input"
+            v-model="timePump"
+            placeholder="minutes"
+            type="number"
+            id="time-pump"
+            name="time-pump"
+            :disabled="!buttonStatus5"
+            required
+          />
         </div>
 
         <div class="form-set">
           <label class="form-label" for="light-threshold">Light</label>
-          <input class="form-input" v-model="lightThreshold" placeholder="lux" type="number" id="light-threshold"
-            name="light-threshold" required />
+          <input
+            class="form-input"
+            v-model="lightThreshold"
+            placeholder="lux"
+            type="number"
+            id="light-threshold"
+            name="light-threshold"
+            :disabled="!buttonStatus5"
+            required
+          />
+          <label class="form-label form-label--col2" for="light-threshold"
+            >Bắt đầu mở rèm</label
+          >
+          <input
+            class="form-input"
+            v-model="hourMotor"
+            placeholder="hour"
+            type="number"
+            id="hour-motor"
+            name="hour-motor"
+            :disabled="!buttonStatus5"
+            required
+          />
         </div>
 
         <div class="form-set">
           <label class="form-label" for="soil-moisture-threshold">Soil</label>
-          <input class="form-input" v-model="soilThreshold" placeholder="%" type="number" id="soil-moisture-threshold"
-            name="soil-moisture-threshold" required />
+          <input
+            class="form-input"
+            v-model="soilThreshold"
+            placeholder="%"
+            type="number"
+            id="soil-moisture-threshold"
+            name="soil-moisture-threshold"
+            :disabled="!buttonStatus5"
+            required
+          />
+          <label
+            class="form-label form-label--col2"
+            for="soil-moisture-threshold"
+            >Thời lượng mở</label
+          >
+          <input
+            class="form-input"
+            v-model="timeMotor"
+            placeholder="minutes"
+            type="number"
+            id="time-motor"
+            name="time-motor"
+            :disabled="!buttonStatus5"
+            required
+          />
         </div>
 
-        <button type="submit" v-on:click="saveData()" id="save-btn">
+        <button type="submit" v-on:click="saveData()" id="save-btn" :disabled="!buttonStatus5">
           Save
         </button>
       </form>
@@ -172,17 +287,19 @@
 import firebase from "./utl/firebase";
 import { onMounted, reactive } from "vue";
 import "firebase/database";
-import { lm35Collection } from "./utl/firebase";
-import { dhtTempCollection } from "./utl/firebase";
-import { dhtHumCollection } from "./utl/firebase";
-import { lightCollection } from "./utl/firebase";
-import { soilCollection } from "./utl/firebase";
-import { pump1Status } from "./utl/firebase";
-import { pump2Status } from "./utl/firebase";
-import { fanStatus } from "./utl/firebase";
-import { motorStatus } from "./utl/firebase";
-import { mode } from "./utl/firebase";
-import { settingThreshold } from "./utl/firebase";
+import {
+  lm35Collection,
+  dhtTempCollection,
+  dhtHumCollection,
+  lightCollection,
+  soilCollection,
+  pump1Status,
+  pump2Status,
+  fanStatus,
+  motorStatus,
+  mode,
+  settingThreshold,
+} from "./utl/firebase";
 
 export default {
   data: () => ({
@@ -196,6 +313,11 @@ export default {
     humThreshold: "",
     lightThreshold: "",
     soilThreshold: "",
+
+    hourPump: "",
+    timePump: "",
+    hourMotor: "",
+    timeMotor: "",
   }),
 
   mounted() {
@@ -261,7 +383,7 @@ export default {
 
       pump1Status
         .set(this.buttonStatus1 ? 1 : 0)
-        .then(() => { })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
@@ -287,7 +409,7 @@ export default {
 
       pump2Status
         .set(this.buttonStatus2 ? 1 : 0)
-        .then(() => { })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
@@ -313,7 +435,7 @@ export default {
 
       fanStatus
         .set(this.buttonStatus3 ? 1 : 0)
-        .then(() => { })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
@@ -339,7 +461,7 @@ export default {
 
       motorStatus
         .set(this.buttonStatus4 ? 1 : 0)
-        .then(() => { })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
@@ -365,7 +487,7 @@ export default {
 
       mode
         .set(this.buttonStatus5 ? 1 : 0)
-        .then(() => { })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
@@ -379,8 +501,24 @@ export default {
         humThreshold: parseInt(this.humThreshold),
         lightThreshold: parseInt(this.lightThreshold),
         soilThreshold: parseInt(this.soilThreshold),
-        timestamp : new Date(),
+        hourPump: parseInt(this.hourPump),
+        timePump: parseInt(this.timePump),
+        hourMotor: parseInt(this.hourMotor),
+        timeMotor: parseInt(this.timeMotor),
+        timestamp: new Date(),
       };
+      if (
+        !this.tempThreshold ||
+        !this.humThreshold ||
+        !this.lightThreshold ||
+        !this.soilThreshold ||
+        !this.hourPump ||
+        !this.timePump ||
+        !this.hourMotor ||
+        !this.timeMotor
+      ) {
+        return;
+      }
       firebase.firestore
         .collection("setting threshold")
         .add(obj6)
@@ -679,15 +817,15 @@ body {
   transition: 0.4s;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: #2196f3;
 }
 
-input:focus+.slider {
+input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -836,15 +974,15 @@ input:checked+.slider:before {
   transition: 0.4s;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: #2196f3;
 }
 
-input:focus+.slider {
+input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -867,12 +1005,33 @@ input:checked+.slider:before {
 }
 
 .form-input {
-  min-width: 150px;
+  min-width: 50px;
+  width: 80px;
+  border: 2px;
+  border-radius: 5px;
+  height: 30px;
 }
 
 .form-label {
-  flex: 1;
+  /* flex: 1; */
+  width: 100px;
+  padding-left: 10px;
   text-align: left;
+}
+.form-label--col2 {
+  min-width: 130px;
+}
+
+#save-btn {
+  border: 2px;
+  border-radius: 5px;
+  height: 30px;
+  width: 50px;
+  background-color: #ccc;
+}
+
+#save-btn:hover {
+  background-color: #aaa;
 }
 
 .footer {
