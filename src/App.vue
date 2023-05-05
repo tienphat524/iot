@@ -160,7 +160,7 @@
         </label>
         <span class="text1">Automatic</span>
       </div>
-      <form style="width: 100%">
+      <div style="width: 100%">
         <div class="form-set">
           <label class="form-label" for="temp-threshold">Temperature</label>
           <input
@@ -274,7 +274,7 @@
         <button type="submit" v-on:click="saveData()" id="save-btn" :disabled="!buttonStatus5">
           Save
         </button>
-      </form>
+      </div>
     </div>
 
     <div class="footer layout">
