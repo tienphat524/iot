@@ -67,7 +67,11 @@
     </div>
     <div class="status1 layout">
       <div class="status_col s_1">
-        <h1>Pump 1</h1>
+        <div>
+          <h1>Pump 1</h1>
+          <h2 v-if="buttonStatus1" style="font-weight: 700; color: #00ac47;">Pump 1 is ON !!! </h2>
+          <h2 v-if="!buttonStatus1" style="font-weight: 700; color: red;">Pump 1 is OFF !!!</h2>
+        </div>
         <div class="stt">
           <img src="./assets/img/pump.png" />
           <div class="btn">
@@ -85,9 +89,13 @@
         </div>
       </div>
       <div class="status_col s_2">
-        <h1>Pump 2</h1>
+        <div>
+          <h1>Pump 2</h1>
+          <h2 v-if="buttonStatus2" style="font-weight: 700; color: #00ac47;">Pump 2 is ON !!!</h2>
+          <h2 v-if="!buttonStatus2" style="font-weight: 700; color: red;">Pump 2 is OFF !!!</h2>
+        </div>
         <div class="stt">
-          <img src="./assets/img/pump (1).png" />
+          <img src="./assets/img/pump (1).png" style="width: 85px; margin-bottom: 5px"/>
           <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
@@ -103,13 +111,17 @@
         </div>
       </div>
       <div class="status_col s_3">
-        <h1>Fan</h1>
+        <div>
+          <h1>Fan</h1>
+          <h2 v-if="buttonStatus3" style="font-weight: 700; color:#00ac47;">Fan is ON !!!</h2>
+          <h2 v-if="!buttonStatus3" style="font-weight: 700; color: red;">Fan is OFF !!!</h2>
+        </div>
         <div class="stt">
           <img
             src="./assets/img/fan.png"
-            style="width: 80px; margin-left: 70px"
+            style="width: 80px; margin-bottom: 5px"
           />
-          <div class="btn" style="margin-left: 50px">
+          <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
               <input
@@ -124,13 +136,19 @@
         </div>
       </div>
       <div class="status_col s_4">
-        <h1>Motor</h1>
+        <div>
+          <h1>Shade System</h1>
+          <h2 v-if="!buttonStatus4" style="font-weight: 700; color: red;">System is OFF !!!</h2>
+          <h2 v-if="buttonStatus4" style="font-weight: 700; color:#00ac47;">System is ON !!!</h2>
+          <h2 v-if="state.closeSwitch == 1" style="font-weight: 700; color: #2ecc71;">SunShade is CLOSE!</h2>
+          <h2 v-if="state.openSwitch == 1 " style="font-weight: 700; color: #2ecc71;">SunShade is OPEN!</h2>
+        </div>
         <div class="stt">
           <img
             src="./assets/img/timing-belt.png"
-            style="width: 80px; margin-left: 30px"
+            style="width: 80px; margin-bottom: 5px"
           />
-          <div class="btn" style="margin-left: 20px">
+          <div class="btn">
             <span class="text">OFF</span>
             <label class="switch">
               <input
@@ -299,6 +317,8 @@ import {
   motorStatus,
   mode,
   settingThreshold,
+  openSwitch,
+  closeSwitch,
 } from "./utl/firebase";
 
 export default {
@@ -546,38 +566,41 @@ export default {
       dhtHumData: {},
       lightData: {},
       soilData: {},
+      closeSwitch: {},
+      openSwitch: {},
     });
 
     onMounted(async () => {
-      // let productDataSet = await productCollection.once("value");
-      // state.productData = productDataSet.val();
 
       let lm35DataSet = await lm35Collection.on("value", (snapshot) => {
         state.lm35Data = snapshot.val();
       });
-      // state.lm35Data = lm35DataSet.val();
 
       let dhtTempDataSet = await dhtTempCollection.on("value", (snapshot) => {
         state.dhtTempData = snapshot.val();
       });
-      // state.dhtTempData = dhtTempDataSet.val();
 
       let dhtHumDataSet = await dhtHumCollection.on("value", (snapshot) => {
         state.dhtHumData = snapshot.val();
       });
-      // state.dhtHumData = dhtHumDataSet.val();
 
       let lightDataSet = await lightCollection.on("value", (snapshot) => {
         state.lightData = snapshot.val();
       });
-      // state.lightData = lightDataSet.val();
 
       let soilDataSet = await soilCollection.on("value", (snapshot) => {
         state.soilData = snapshot.val();
       });
-      // state.soilData = soilDataSet.val();
-    });
 
+      let cswitchDataSet = await closeSwitch.on("value", (snapshot) => {
+        state.closeSwitch = snapshot.val();
+      });
+
+      let owitchDataSet = await openSwitch.on("value", (snapshot) => {
+        state.openSwitch = snapshot.val();
+      });
+
+    });
     return { state };
   },
 };
@@ -853,10 +876,14 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-around;
 }
 
 .stt {
-  padding-left: 100px;
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .text {
@@ -874,6 +901,7 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-around;
 }
 
 .s_2 img {
@@ -885,6 +913,7 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-around;
 }
 
 .s_3 img {
@@ -896,6 +925,7 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-around;
 }
 
 .s_4 img {
